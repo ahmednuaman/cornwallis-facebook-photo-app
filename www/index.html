@@ -7,9 +7,14 @@
 		<title></title>
 	</head>
 	<body>
-		
-		<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
-		<script src="assets/js/common.js"></script>
+		<button id="capturephoto">Take a photo!</button>
+		<button id="authwithfb">Auth with FB</button>
+		<button id="sendtofb">Send to FB</button>
+		<img id="thephoto" width="100%" />
+		<!--<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+		<script src="http://localhost:8080/target/target-script-min.js#anonymous"></script>-->
 		<script src="assets/js/cordova.js"></script>
+		<script src="assets/js/jquery.js"></script>
+		<script src="assets/js/common.js"></script>
 	</body>
 </html>
