@@ -3,9 +3,14 @@ class Common
     
     canvas = null
     image = 'assets/image/test.jpg'
+    imageX = 0
     jt = new $.jQTouch
         statusBar: 'black-translucent'
     stage = null
+    text = { }
+    textColour = '#ffffff'
+    textFont = 'bold ' + ( window.devicePixelRatio * 4 ) + '0px Arial'
+    textOutline = '#000000'
     
     ready = ->
         canvas = document.getElementById 'editphotoimage'
@@ -58,13 +63,54 @@ class Common
             bitmap.scaleY = canvas.height / img.height
             bitmap.scaleX = bitmap.scaleY
             
-            bitmap.x = canvas.width - ( img.width * bitmap.scaleX )
+            bitmap.x = imageX = canvas.width - ( img.width * bitmap.scaleX )
             
             stage.addChild bitmap
             
             stage.update()
         
         img.src = image
+        
+        $( '#editphoto' ).find( 'select' ).focus( (event) ->
+            $( this ).find( 'option:first' ).remove()
+            
+            $( this ).unbind( 'focus' )
+        ).change( -> 
+            addTextToPhoto $( this )
+        ).each( -> 
+            $( this ).prepend( '<option>' + $( this ).data( 'label' ) + '</option>' )
+            .val( $( this ).find( 'option:first' ) );
+        )
+    
+    addTextToPhoto = (element) ->
+        id = element.attr 'id'
+        base = text[ id ]
+        outline = text[ id + 'outline' ]
+        
+        if !!base && !!outline
+            base.text = sortOutText element.val()
+            outline.text = sortOutText element.val()
+            
+        else
+            text[ id ] = base = new Text sortOutText( element.val() ), textFont, textColour
+            text[ id + 'outline' ] = outline = new Text sortOutText( element.val() ), textFont, textOutline
+            
+            outline.outline = true
+            
+            base.maxWidth = outline.maxWidth = canvas.width
+            base.textAlign = outline.textAlign = 'center'
+            
+            base.x = outline.x = imageX * -1
+            base.y = outline.y = if id.indexOf( 'top' ) == -1 then canvas.height - 20 * window.devicePixelRatio else 50 * window.devicePixelRatio
+            
+            stage.addChild base
+            stage.addChild outline
+            
+        
+        stage.update()
+    
+    sortOutText = (text) ->
+        text.toUpperCase().replace( /_/g, ' ' ).replace( /\|/g, "\n" )
     
     getPhoto = (source) ->
         try
