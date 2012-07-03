@@ -1,5 +1,5 @@
 class Common
-    window.location.hash    = ''
+    window.location.hash = ''
     
     canvas = null
     image = 'assets/image/test.jpg'
@@ -36,6 +36,7 @@ class Common
             when 'takephoto' then stateTakePhoto()
             when 'pickexistingphoto' then statePickExistingPhoto()
             when 'editphoto' then stateEditPhoto()
+            when 'confirmphoto' then stateConfirmPhoto()
         
     
     stateTakePhoto = ->
@@ -71,11 +72,13 @@ class Common
         
         img.src = image
         
-        $( '#editphoto' ).find( 'select' ).focus( (event) ->
+        $( '#editphoto' ).find( 'select' ).unbind( 'focus change' ).focus( (event) ->
             $( this ).find( 'option:first' ).remove()
             
             $( this ).unbind( 'focus' )
         ).change( -> 
+            addTextToPhoto $( this )
+        ).blur( ->
             addTextToPhoto $( this )
         ).each( -> 
             $( this ).prepend( '<option>' + $( this ).data( 'label' ) + '</option>' )
@@ -109,10 +112,15 @@ class Common
         
         stage.update()
     
+    stateConfirmPhoto = ->
+        $( '#confirmphotoimage' ).attr( 'src', stage.toDataURL( null, 'image/jpeg' ) )
+    
     sortOutText = (text) ->
         text.toUpperCase().replace( /_/g, ' ' ).replace( /\|/g, "\n" )
     
     getPhoto = (source) ->
+        text = { }
+        
         try
             navigator.camera.getPicture handleTakePhotoSuccess, handleTakePhotoFail, 
                 quality: 80,
