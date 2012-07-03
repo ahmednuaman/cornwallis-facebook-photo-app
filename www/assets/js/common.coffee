@@ -1,4 +1,5 @@
 class Common
+    image = 'assets/image/test.jpg'
     jt = new $.jQTouch
         statusBar: 'black'
     
@@ -17,7 +18,7 @@ class Common
     stateTakePhoto = ->
         try
             navigator.camera.getPicture handleTakePhotoSuccess, handleTakePhotoFail, 
-                quality: 50,
+                quality: 80,
                 destinationType: Camera.DestinationType.FILE_URI
             
         catch error
@@ -25,14 +26,15 @@ class Common
         
     
     handleTakePhotoSuccess = (imageURL) ->
-        $( '#photoedit' ).find( '#photoeditimage' ).attr( 'src', imageURL )
+        image = imageURL
         
         jt.goTo '#photoedit', 'slide'
     
     handleTakePhotoFail = (reason) ->
-        alert reason
-        
-        jt.goBack '#start'
+        # alert reason
+        #         
+        #         jt.goBack '#start'
+        jt.goTo '#photoedit', 'slide'
     
     statePickExistingPhoto = ->
         
