@@ -81,6 +81,7 @@ class Common
         ).blur( ->
             addTextToPhoto $( this )
         ).each( -> 
+            $( this ).find( 'option[val=""]' ).remove()
             $( this ).prepend( '<option>' + $( this ).data( 'label' ) + '</option>' )
             .val( $( this ).find( 'option:first' ) );
         )
