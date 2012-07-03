@@ -27,7 +27,7 @@ class Common
     handleTakePhotoSuccess = (imageURL) ->
         $( '#photoedit' ).find( '#photoeditimage' ).attr( 'src', imageURL )
         
-        jt.goTo '#photoedit', 'flip'
+        jt.goTo '#photoedit', 'slide'
     
     handleTakePhotoFail = (reason) ->
         alert reason
