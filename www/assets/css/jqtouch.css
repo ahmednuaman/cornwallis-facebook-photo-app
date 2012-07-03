@@ -1806,7 +1806,7 @@ body {
 }
 /* line 510, ../scss/include/_skeleton.scss */
 #jqt ul.plastic li a.active.loading {
-  background-image: url(img/loading.gif);
+  background-image: url(../image/loading.gif);
   background-position: 95% center;
   background-repeat: no-repeat;
 }
@@ -1927,7 +1927,7 @@ body {
 #jqt ul li .toggle input[type="checkbox"] {
   -webkit-border-radius: 5px;
   border-radius: 5px;
-  background: white url(../img/jqt/on_off.png) 0 0 no-repeat;
+  background: white url(../../image/jqt/on_off.png) 0 0 no-repeat;
 }
 /* line 42, ../scss/jqtouch.scss */
 #jqt ul li input[type='submit'] {

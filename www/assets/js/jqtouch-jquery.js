@@ -1,4 +1,200 @@
-(function(b){function l(a){function i(){clearTimeout(f);c.unselect();j(c)}function g(b){j(c);clearTimeout(f);clearTimeout(m);Math.abs(h)<e.moveThreshold&&Math.abs(k)<e.moveThreshold&&n<e.pressDelay?d&&e.useFastTouch&&c.trigger("tap",b):c.unselect()}function o(){var b=d?event.changedTouches[0]:event;h=b.pageX-p;k=b.pageY-q;n=(new Date).getTime()-l;var b=Math.abs(h),a=Math.abs(k),g;b>a&&30<b&&1E3>n&&(g=0>h?"left":"right",j(c),c.trigger("swipe",{direction:g,deltaX:h,deltaY:k}));c.unselect();clearTimeout(f);
-(b>e.moveThreshold||a>e.moveThreshold)&&clearTimeout(m)}function j(a){a&&(a.unbind(r,o).unbind(s,g),d?a.unbind(t,i):b(document).unbind("mouseout",i))}if(!u)return void 0!==window.console&&console.log("TouchStart handler aborted because tap is not ready"),a.preventDefault(),!1;var c=b(a.target);if(c.length){var l=(new Date).getTime(),f=null,m=null,p,q,h=0,k=0,n=0,a=d?event.changedTouches[0]:event;p=a.pageX;q=a.pageY;(function(a){a.bind(r,o).bind(s,g);d?a.bind(t,i):b(document).bind("mouseout",i)})(c);
-f=setTimeout(function(){c.makeActive()},e.hoverDelay);m=setTimeout(function(){j(c);c.unselect();clearTimeout(f);c.trigger("press")},e.pressDelay)}else void 0!==window.console&&console.log("Could not find target of touchstart event.")}var d=!!window.Touch,v=d?"touchstart":"mousedown",r=d?"touchmove":"mousemove",s=d?"touchend":"mouseup",t=d?"touchcancel":"mouseout",u=!0,e={useFastTouch:!0,debug:!0,moveThreshold:10,hoverDelay:50,pressDelay:750};b.jQTouch=function(a){for(var d in a)e[d]=a[d];b(document).bind("ready",
-function(){b("#jqt").bind(v,l)});b.fn.press=function(a){return b.isFunction(a)?b(this).live("press",a):b(this).trigger("press")};b.fn.swipe=function(a){return b.isFunction(a)?b(this).live("swipe",a):b(this).trigger("swipe")};b.fn.tap=function(a){return b.isFunction(a)?b(this).live("tap",a):b(this).trigger("tap")};a.framework=b;return jQTouchCore(a)};b.jQTouch.addExtension=function(a){jQTouchCore.prototype.extensions.push(a)}})(jQuery);
+/*
+
+    jQuery Bridge for jQTouch
+    (adds events which Zepto includes by default)
+
+    Created by David Kaneda <http://www.davidkaneda.com>
+    Maintained by Jonathan Stark <http://jonathanstark.com/>
+    Sponsored by Sencha Labs <http://www.sencha.com/>
+
+    Documentation and issue tracking on GitHub <http://wiki.github.com/senchalabs/jQTouch/>
+
+    (c) 2009-2011 by jQTouch project members.
+    See LICENSE.txt for license.
+
+*/
+
+(function($) {
+    var SUPPORT_TOUCH = (!!window.Touch),
+        START_EVENT = SUPPORT_TOUCH ? 'touchstart' : 'mousedown',
+        MOVE_EVENT = SUPPORT_TOUCH ? 'touchmove' : 'mousemove',
+        END_EVENT = SUPPORT_TOUCH ? 'touchend' : 'mouseup',
+        CANCEL_EVENT = SUPPORT_TOUCH ? 'touchcancel' : 'mouseout', // mouseout on document
+        lastTime = 0,
+        tapReady = true,
+        jQTSettings = {
+          useFastTouch: true, // experimental
+          debug: true,
+          moveThreshold: 10,
+          hoverDelay: 50,
+          pressDelay: 750
+        };
+
+    function warn(message) {
+        if (window.console !== undefined) {
+            console.log(message);
+        }
+    }
+
+    function touchStartHandler(e) {
+
+        if (!tapReady) {
+            warn('TouchStart handler aborted because tap is not ready');
+            e.preventDefault();
+            return false;
+        }
+
+        var $el = $(e.target);
+
+        // Error check
+        if (!$el.length) {
+            warn('Could not find target of touchstart event.');
+            return;
+        }
+
+        var startTime = new Date().getTime(),
+            hoverTimeout = null,
+            pressTimeout = null,
+            touch,
+            startX,
+            startY,
+            deltaX = 0,
+            deltaY = 0,
+            deltaT = 0;
+
+        touch = SUPPORT_TOUCH? event.changedTouches[0]: event;
+        startX = touch.pageX;
+        startY = touch.pageY;
+
+        // Prep the element
+        bindEvents($el);
+
+        hoverTimeout = setTimeout(function() {
+            $el.makeActive();
+        }, jQTSettings.hoverDelay);
+
+        pressTimeout = setTimeout(function() {
+            unbindEvents($el);
+            $el.unselect();
+            clearTimeout(hoverTimeout);
+            $el.trigger('press');
+        }, jQTSettings.pressDelay);
+
+        // Private touch functions
+        function touchCancelHandler(e) {
+            clearTimeout(hoverTimeout);
+            $el.unselect();
+            unbindEvents($el);
+        }
+
+        function touchEndHandler(e) {
+            // updateChanges();
+            unbindEvents($el);
+            clearTimeout(hoverTimeout);
+            clearTimeout(pressTimeout);
+            if (Math.abs(deltaX) < jQTSettings.moveThreshold && Math.abs(deltaY) < jQTSettings.moveThreshold && deltaT < jQTSettings.pressDelay) {
+                // e.preventDefault();
+                // e.stopImmediatePropagation();
+                if (SUPPORT_TOUCH && jQTSettings.useFastTouch) {
+                    $el.trigger('tap', e);
+                }
+            } else {
+                $el.unselect();
+            }
+        }
+
+        function touchMoveHandler(e) {
+            updateChanges();
+            var absX = Math.abs(deltaX);
+            var absY = Math.abs(deltaY);
+            var direction;
+            if (absX > absY && (absX > 30) && deltaT < 1000) {
+                if (deltaX < 0) {
+                    direction = 'left';
+                } else {
+                    direction = 'right';
+                }
+                unbindEvents($el);
+                $el.trigger('swipe', {direction:direction, deltaX:deltaX, deltaY: deltaY});
+            }
+            $el.unselect();
+            clearTimeout(hoverTimeout);
+            if (absX > jQTSettings.moveThreshold || absY > jQTSettings.moveThreshold) {
+                clearTimeout(pressTimeout);
+            }
+        }
+
+        function updateChanges() {
+            var firstFinger = SUPPORT_TOUCH? event.changedTouches[0]: event; 
+            deltaX = firstFinger.pageX - startX;
+            deltaY = firstFinger.pageY - startY;
+            deltaT = new Date().getTime() - startTime;
+        }
+
+        function bindEvents($el) {
+            $el.bind(MOVE_EVENT, touchMoveHandler).bind(END_EVENT, touchEndHandler);
+            if (SUPPORT_TOUCH) {
+                $el.bind(CANCEL_EVENT, touchCancelHandler);
+            } else {
+                $(document).bind('mouseout', touchCancelHandler);
+            }
+        }
+
+        function unbindEvents($el) {
+            if (!$el) return;
+
+            $el.unbind(MOVE_EVENT, touchMoveHandler).unbind(END_EVENT, touchEndHandler);
+            if (SUPPORT_TOUCH) {
+                $el.unbind(CANCEL_EVENT, touchCancelHandler);
+            } else {
+                $(document).unbind('mouseout', touchCancelHandler);
+            }
+        }
+    } // End touch handler
+
+    $.jQTouch = function(options) {
+
+        // take in options
+        for (var i in options) {
+            jQTSettings[i] = options[i];
+        }
+        
+        $(document).bind('ready', function() {
+            $('#jqt').bind(START_EVENT, touchStartHandler);  
+        });
+
+        $.fn.press = function(fn) {
+            if ($.isFunction(fn)) {
+                return $(this).live('press', fn);
+            } else {
+                return $(this).trigger('press');
+            }
+        };
+        $.fn.swipe = function(fn) {
+            if ($.isFunction(fn)) {
+                return $(this).live('swipe', fn);
+            } else {
+                return $(this).trigger('swipe');
+            }
+        };
+        $.fn.tap = function(fn) {
+            if ($.isFunction(fn)) {
+                return $(this).live('tap', fn);
+            } else {
+                return $(this).trigger('tap');
+            }
+        };
+
+        options.framework = $;
+
+        var core = jQTouchCore(options);
+        
+        return core;
+    };
+    
+    // Extensions directly manipulate the jQTouch object, before it's initialized.
+    $.jQTouch.addExtension = function(extension) {
+        jQTouchCore.prototype.extensions.push(extension);
+    };
+
+})(jQuery);

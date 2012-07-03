@@ -1,18 +1,752 @@
-(function(){jQTouchCore=function(j){function n(a){"string"===typeof a.selector&&"string"===typeof a.name&&l.push(a)}function v(a,b){k.unshift({page:a,animation:b,hash:"#"+a.attr("id"),id:a.attr("id")})}function C(a){var b=c(a.target);b.is(h.join(", "))||(b=c(a.target).closest(h.join(", ")));b&&b.attr("href")&&!b.isExternalLink()&&a.preventDefault();c.support.touch||c(a.target).trigger("tap",a)}function w(a,b,d,g){function s(){var h=D;c.support.animationEvents&&d&&e.useAnimations?(a.unbind("webkitAnimationEnd",
-s),a.removeClass("current "+f+" out"),b.removeClass(f),i.removeClass("animating animating3d"),!0===e.trackScrollPositions&&(b.css("top",-b.data("lastScroll")),setTimeout(function(){b.css("top",0);window.scroll(0,b.data("lastScroll"));c(".scroll",b).each(function(){this.scrollTop=-c(this).data("lastScroll")})},0))):(a.removeClass(f+" out current"),h+=260);setTimeout(function(){b.removeClass("in")},h);m=b;g?k.shift():v(m,d);a.unselect();x(m.attr("id"));b.trigger("pageAnimationEnd",{direction:"in",animation:d});
-a.trigger("pageAnimationEnd",{direction:"out",animation:d})}g=g?g:!1;if(void 0===b||0===b.length||b.hasClass("current"))return c.fn.unselect(),!1;c(":focus").trigger("blur");a.trigger("pageAnimationStart",{direction:"out",back:g});b.trigger("pageAnimationStart",{direction:"in",back:g});if(c.support.animationEvents&&d&&e.useAnimations){if(!c.support.transform3d&&d.is3d)d.name=e.defaultAnimation;var f=d.name,h=d.is3d?"animating3d":"";g&&(f=f.replace(/left|right|up|down|in|out/,E));a.bind("webkitAnimationEnd",
-s);i.addClass("animating "+h);h=window.pageYOffset;!0===e.trackScrollPositions&&b.css("top",window.pageYOffset-(b.data("lastScroll")||0));b.addClass(f+" in current");a.addClass(f+" out");!0===e.trackScrollPositions&&(a.data("lastScroll",h),c(".scroll",a).each(function(){c(this).data("lastScroll",this.scrollTop)}))}else b.addClass("current in"),s();return!0}function E(a){return{up:"down",down:"up",left:"right",right:"left","in":"out",out:"in"}[a]||a}function q(){1===k.length&&window.history.go(-1);
-var a=k[0];return w(a.page,k[1].page,a.animation,!0)?o:!1}function p(a,b){var d=k[0].page;if("string"===typeof b)for(var g=0,e=l.length;g<e;g++)if(l[g].name===b){b=l[g];break}if("string"===typeof a){g=c(a);if(1>g.length){t(a,{animation:b});return}a=g}return w(d,a,b)?o:!1}function F(){if(location.hash===k[0].hash)return!0;if(""===location.hash||k[1]&&location.hash===k[1].hash)return q(),!0;p(c(location.hash),e.defaultAnimation)}function y(a){for(var b,d=0,c=l.length;d<c;d++)if(a.is(l[d].selector)){b=
-l[d];break}if(!b)b=e.defaultAnimation;return b}function z(a,b){var d=null,e=document.createElement("div");e.innerHTML=a;c(e).children().each(function(){var a=c(this);a.attr("id")||a.attr("id","page-"+ ++G);c("#"+a.attr("id")).remove();i.append(a);i.trigger("pageInserted",{page:a});if(a.hasClass("current")||!d)d=a});return null!==d?(p(d,b),d):!1}function H(){i.css("minHeight",1E3);scrollTo(0,0);i.css("minHeight",window.innerHeight);r=90==Math.abs(window.orientation)?"landscape":"portrait";i.removeClass("portrait landscape").addClass(r).trigger("turn",
-{orientation:r})}function x(a){location.hash="#"+a.replace(/^#/,"")}function t(a,b){var d=c.extend({},{data:null,method:"GET",animation:null,callback:null,$referrer:null},b);"#"!=a?c.ajax({url:a,data:d.data,type:d.method,success:function(a){if(a=z(a,d.animation))"GET"==d.method&&!0===e.cacheGetRequests&&d.$referrer&&d.$referrer.attr("href","#"+a.attr("id")),d.callback&&d.callback(!0)},error:function(){d.$referrer&&d.$referrer.unselect();d.callback&&d.callback(!1)}}):d.$referrer&&d.$referrer.unselect()}
-function A(a,b){c(":focus").trigger("blur");a.preventDefault();var d="string"===typeof a?c(a).eq(0):a.target?c(a.target):c(a);return d.length&&d.is(e.formSelector)&&d.attr("action")?(t(d.attr("action"),{data:d.serialize(),method:d.attr("method")||"POST",animation:y(d),callback:b}),!1):!0}function I(a){a=a.closest("form");return 0!==a.length?(a.trigger("submit"),!1):!0}function J(){var a,b,d,c;a=document.getElementsByTagName("head")[0];b=document.body;d=document.createElement("style");d.textContent=
-"@media (transform-3d),(-o-transform-3d),(-moz-transform-3d),(-webkit-transform-3d){#jqt-3dtest{height:3px}}";c=document.createElement("div");c.id="jqt-3dtest";a.appendChild(d);b.appendChild(c);a=3===c.offsetHeight;d.parentNode.removeChild(d);c.parentNode.removeChild(c);return a}function K(a){var b=c(a.target),a=h.join(", ");b.is(a)||(b=b.closest(a));b.length&&b.attr("href")&&b.addClass("active");b.on(c.support.touch?"touchmove":"mousemove",function(){b.removeClass("active")});b.on("touchend",function(){b.unbind("touchmove mousemove")})}
-function L(a){var b=c(a.target);b.is(h.join(", "))||(b=b.closest(h.join(", ")));if(!b.length||!b.attr("href"))return!1;var a=b.attr("target"),d=b.prop("hash"),g=b.attr("href"),f=null;if(b.isExternalLink())return b.unselect(),!0;if(b.is(e.backSelector))q(d);else if(b.is(e.submitSelector))I(b);else{if("_webapp"===a)return window.location=g,!1;if("#"===g)return b.unselect(),!0;f=y(b);d&&"#"!==d?(b.addClass("active"),p(c(d).data("referrer",b),f,b.hasClass("reverse"))):(b.addClass("loading active"),t(b.attr("href"),
-{animation:f,callback:function(){b.removeClass("loading");setTimeout(c.fn.unselect,250,b)},$referrer:b}));return!1}}var c=j.framework,i,M=c("head"),k=[],G=0,e={},m="",r="portrait",h=[],o={},D=100,B=jQTouchCore.prototype.extensions,l=[],f="",u={addGlossToIcon:!0,backSelector:".back, .cancel, .goback",cacheGetRequests:!0,debug:!0,defaultAnimation:"slideleft",fixedViewport:!0,formSelector:"form",fullScreen:!0,fullScreenClass:"fullscreen",icon:null,icon4:null,preloadImages:!1,startupScreen:null,statusBar:"default",
-submitSelector:".submit",touchSelector:"a, .touch",trackScrollPositions:!0,useAnimations:!0,useFastTouch:!0,useTouchScroll:!0,animations:[{name:"cubeleft",selector:".cubeleft, .cube",is3d:!0},{name:"cuberight",selector:".cuberight",is3d:!0},{name:"dissolve",selector:".dissolve"},{name:"fade",selector:".fade"},{name:"flipleft",selector:".flipleft, .flip",is3d:!0},{name:"flipright",selector:".flipright",is3d:!0},{name:"pop",selector:".pop",is3d:!0},{name:"swapleft",selector:".swap",is3d:!0},{name:"slidedown",
-selector:".slidedown"},{name:"slideright",selector:".slideright"},{name:"slideup",selector:".slideup"},{name:"slideleft",selector:".slideleft, .slide, #jqt > * > ul li a"}]};(function(a){e=c.extend({},u,a);if(e.preloadImages)for(a=e.preloadImages.length-1;0<=a;a--)(new Image).src=e.preloadImages[a];a=e.addGlossToIcon?"":"-precomposed";e.icon&&(f+='<link rel="apple-touch-icon'+a+'" href="'+e.icon+'" />');e.icon4&&(f+='<link rel="apple-touch-icon'+a+'" sizes="114x114" href="'+e.icon4+'" />');e.startupScreen&&
-(f+='<link rel="apple-touch-startup-image" href="'+e.startupScreen+'" />');e.fixedViewport&&(f+='<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>');e.fullScreen&&(f+='<meta name="apple-mobile-web-app-capable" content="yes" />',e.statusBar&&(f+='<meta name="apple-mobile-web-app-status-bar-style" content="'+e.statusBar+'" />'));f&&M.prepend(f)})(j);c(document).ready(function(){if(!c.support)c.support={};c.support.animationEvents="undefined"!=
-typeof window.WebKitAnimationEvent;c.support.touch="undefined"!=typeof window.TouchEvent&&-1<window.navigator.userAgent.indexOf("Mobile")&&e.useFastTouch;c.support.transform3d=J();c.support.ios5=/OS (5(_\d+)*) like Mac OS X/i.test(window.navigator.userAgent);c.fn.isExternalLink=function(){var a=c(this);return"_blank"==a.attr("target")||"external"==a.attr("rel")||a.is('a[href^="http://maps.google.com"], a[href^="mailto:"], a[href^="tel:"], a[href^="javascript:"], a[href*="youtube.com/v"], a[href*="youtube.com/watch"]')};
-c.fn.makeActive=function(){return c(this).addClass("active")};c.fn.unselect=function(a){a?a.removeClass("active"):c(".active").removeClass("active")};for(var a=0,b=B.length;a<b;a++){var d=B[a];c.isFunction(d)&&c.extend(o,d(o))}a=0;for(b=u.animations.length;a<b;a++){d=u.animations[a];if(void 0!==e[d.name+"Selector"])d.selector=e[d.name+"Selector"];n(d)}h.push(e.touchSelector);h.push(e.backSelector);h.push(e.submitSelector);c(h.join(", ")).css("-webkit-touch-callout","none");i=c("#jqt");a=[];0===i.length&&
-(i=c(document.body).attr("id","jqt"));c.support.transform3d&&a.push("supports3d");c.support.ios5&&e.useTouchScroll&&a.push("touchscroll");e.fullScreenClass&&!0===window.navigator.standalone&&a.push(e.fullScreenClass,e.statusBar);i.addClass(a.join(" ")).bind("click",C).bind("orientationchange",H).bind("submit",A).bind("tap",L).bind(c.support.touch?"touchstart":"mousedown",K).trigger("orientationchange");c(window).bind("hashchange",F);a=location.hash;m=0===c("#jqt > .current").length?c("#jqt > *:first-child").addClass("current"):
-c("#jqt > .current");x(m.attr("id"));v(m);1===c(a).length&&p(a)});return o={addAnimation:n,animations:l,getOrientation:function(){return r},goBack:q,insertPages:z,goTo:p,history:k,settings:e,submitForm:A}};jQTouchCore.prototype.extensions=[];window.Zepto&&function(j){j.jQTouch=function(n){n.framework=j;return jQTouchCore(n)};j.fn.prop=j.fn.attr;j.jQTouch.addExtension=function(j){jQTouchCore.prototype.extensions.push(j)}}(Zepto)})();
+/*
+
+            _/    _/_/    _/_/_/_/_/                              _/
+               _/    _/      _/      _/_/    _/    _/    _/_/_/  _/_/_/
+          _/  _/  _/_/      _/    _/    _/  _/    _/  _/        _/    _/
+         _/  _/    _/      _/    _/    _/  _/    _/  _/        _/    _/
+        _/    _/_/  _/    _/      _/_/      _/_/_/    _/_/_/  _/    _/
+       _/
+    _/
+
+    Created by David Kaneda <http://www.davidkaneda.com>
+    Maintained by Thomas Yip <http://beedesk.com/>
+    Sponsored by Sencha Labs <http://www.sencha.com/>
+    Special thanks to Jonathan Stark <http://www.jonathanstark.com/>
+
+    Documentation and issue tracking on GitHub <http://github.com/senchalabs/jQTouch/>
+
+    (c) 2009-2011 Sencha Labs
+    jQTouch may be freely distributed under the MIT license.
+
+*/
+(function() {
+
+    jQTouchCore = function(options) {
+        // Initialize internal jQT variables
+        var $ = options.framework,
+            $body,
+            $head=$('head'),
+            history=[],
+            newPageCount=0,
+            jQTSettings={},
+            $currentPage='',
+            orientation='portrait',
+            touchSelectors=[],
+            publicObj={},
+            tapBuffer=100, // High click delay = ~350, quickest animation (slide) = 250
+            extensions=jQTouchCore.prototype.extensions,
+            animations=[],
+            hairExtensions='',
+            defaults = {
+                addGlossToIcon: true,
+                backSelector: '.back, .cancel, .goback',
+                cacheGetRequests: true,
+                debug: true,
+                defaultAnimation: 'slideleft',
+                fixedViewport: true,
+                formSelector: 'form',
+                fullScreen: true,
+                fullScreenClass: 'fullscreen',
+                icon: null,
+                icon4: null, // available in iOS 4.2 and later.
+                preloadImages: false,
+                startupScreen: null,
+                statusBar: 'default', // other options: black-translucent, black
+                submitSelector: '.submit',
+                touchSelector: 'a, .touch',
+                trackScrollPositions: true,
+                useAnimations: true,
+                useFastTouch: true,
+                useTouchScroll: true,
+                animations: [ // highest to lowest priority
+                    {name:'cubeleft', selector:'.cubeleft, .cube', is3d: true},
+                    {name:'cuberight', selector:'.cuberight', is3d: true},
+                    {name:'dissolve', selector:'.dissolve'},
+                    {name:'fade', selector:'.fade'},
+                    {name:'flipleft', selector:'.flipleft, .flip', is3d: true},
+                    {name:'flipright', selector:'.flipright', is3d: true},
+                    {name:'pop', selector:'.pop', is3d: true},
+                    {name:'swapleft', selector:'.swap', is3d: true},
+                    {name:'slidedown', selector:'.slidedown'},
+                    {name:'slideright', selector:'.slideright'},
+                    {name:'slideup', selector:'.slideup'},
+                    {name:'slideleft', selector:'.slideleft, .slide, #jqt > * > ul li a'}
+                ]
+            }; // end defaults
+
+        function warn(message) {
+            if (window.console !== undefined && jQTSettings.debug === true) {
+                console.warn(message);
+            }
+        }
+        function addAnimation(animation) {
+            if (typeof(animation.selector) === 'string' && typeof(animation.name) === 'string') {
+                animations.push(animation);
+            }
+        }
+        function addPageToHistory(page, animation) {
+            history.unshift({
+                page: page,
+                animation: animation,
+                hash: '#' + page.attr('id'),
+                id: page.attr('id')
+            });
+        }
+
+        // Unfortunately, we can not assume the "tap" event
+        // is being used for links, forms, etc.
+        function clickHandler(e) {
+
+            // Figure out whether to prevent default
+            var $el = $(e.target);
+
+            // Find the nearest tappable ancestor
+            if (!$el.is(touchSelectors.join(', '))) {
+                $el = $(e.target).closest(touchSelectors.join(', '));
+            }
+
+            // Prevent default if we found an internal link (relative or absolute)
+            if ($el && $el.attr('href') && !$el.isExternalLink()) {
+                e.preventDefault();
+            } else {
+            }
+
+            // Trigger a tap event if touchstart is not on the job
+            if ($.support.touch) {
+            } else {
+                $(e.target).trigger('tap', e);
+            }
+
+        }
+        function doNavigation(fromPage, toPage, animation, goingBack) {
+
+            goingBack = goingBack ? goingBack : false;
+
+            // Error check for target page
+            if (toPage === undefined || toPage.length === 0) {
+                $.fn.unselect();
+                return false;
+            }
+
+            // Error check for fromPage===toPage
+            if (toPage.hasClass('current')) {
+                $.fn.unselect();
+                return false;
+            }
+
+            // Collapse the keyboard
+            $(':focus').trigger('blur');
+
+            fromPage.trigger('pageAnimationStart', { direction: 'out', back: goingBack });
+            toPage.trigger('pageAnimationStart', { direction: 'in', back: goingBack });
+
+            if ($.support.animationEvents && animation && jQTSettings.useAnimations) {
+                // Fail over to 2d animation if need be
+                if (!$.support.transform3d && animation.is3d) {
+                    animation.name = jQTSettings.defaultAnimation;
+                }
+
+                // Reverse animation if need be
+                var finalAnimationName = animation.name,
+                    is3d = animation.is3d ? 'animating3d' : '';
+
+                if (goingBack) {
+                    finalAnimationName = finalAnimationName.replace(/left|right|up|down|in|out/, reverseAnimation );
+                }
+
+                // Bind internal "cleanup" callback
+                fromPage.bind('webkitAnimationEnd', navigationEndHandler);
+
+                // Trigger animations
+                $body.addClass('animating ' + is3d);
+
+                var lastScroll = window.pageYOffset;
+
+                // Position the incoming page so toolbar is at top of viewport regardless of scroll position on from page
+                if (jQTSettings.trackScrollPositions === true) {
+                    toPage.css('top', window.pageYOffset - (toPage.data('lastScroll') || 0));
+                }
+                
+                toPage.addClass(finalAnimationName + ' in current');
+                fromPage.addClass(finalAnimationName + ' out');
+
+                if (jQTSettings.trackScrollPositions === true) {
+                    fromPage.data('lastScroll', lastScroll);
+                    $('.scroll', fromPage).each(function(){
+                        $(this).data('lastScroll', this.scrollTop);
+                    });
+                }
+
+            } else {
+                toPage.addClass('current in');
+                navigationEndHandler();
+            }
+
+            // Private navigationEnd callback
+            function navigationEndHandler(event) {
+                var bufferTime = tapBuffer;
+
+                if ($.support.animationEvents && animation && jQTSettings.useAnimations) {
+                    fromPage.unbind('webkitAnimationEnd', navigationEndHandler);
+                    fromPage.removeClass('current ' + finalAnimationName + ' out');
+                    toPage.removeClass(finalAnimationName);
+                    $body.removeClass('animating animating3d');
+                    if (jQTSettings.trackScrollPositions === true) {
+                        toPage.css('top', -toPage.data('lastScroll'));
+
+                        // Have to make sure the scroll/style resets
+                        // are outside the flow of this function.
+                        setTimeout(function(){
+                            toPage.css('top', 0);
+                            window.scroll(0, toPage.data('lastScroll'));
+                            $('.scroll', toPage).each(function(){
+                                this.scrollTop = - $(this).data('lastScroll');
+                            });
+                        }, 0);
+                    }
+                } else {
+                    fromPage.removeClass(finalAnimationName + ' out current');
+                    bufferTime += 260;
+                }
+
+                // In class is intentionally delayed, as it is our ghost click hack
+                setTimeout(function(){
+                    toPage.removeClass('in');
+                }, bufferTime);
+
+                // Housekeeping
+                $currentPage = toPage;
+                if (goingBack) {
+                    history.shift();
+                } else {
+                    addPageToHistory($currentPage, animation);
+                }
+
+                fromPage.unselect();
+
+                setHash($currentPage.attr('id'));
+
+                // Trigger custom events
+                toPage.trigger('pageAnimationEnd', { direction:'in', animation: animation});
+                fromPage.trigger('pageAnimationEnd', { direction:'out', animation: animation});
+            }
+
+            return true;
+        }
+        function reverseAnimation(animation) {
+            var opposites={
+                'up' : 'down',
+                'down' : 'up',
+                'left' : 'right',
+                'right' : 'left',
+                'in' : 'out',
+                'out' : 'in'
+            };
+
+            return opposites[animation] || animation;
+        }
+        function getOrientation() {
+            return orientation;
+        }
+        function goBack() {
+
+            // Error checking
+            if (history.length < 1 ) {
+            }
+
+            if (history.length === 1 ) {
+                window.history.go(-1);
+            }
+
+            var from = history[0],
+                to = history[1];
+
+            if (doNavigation(from.page, to.page, from.animation, true)) {
+                return publicObj;
+            } else {
+                return false;
+            }
+
+        }
+        function goTo(toPage, animation) {
+
+            var fromPage = history[0].page;
+
+            if (typeof animation === 'string') {
+                for (var i=0, max=animations.length; i < max; i++) {
+                    if (animations[i].name === animation) {
+                        animation = animations[i];
+                        break;
+                    }
+                }
+            }
+
+            if (typeof toPage === 'string') {
+                var nextPage = $(toPage);
+
+                if (nextPage.length < 1) {
+                    showPageByHref(toPage, {
+                        animation: animation
+                    });
+                    return;
+                } else {
+                    toPage = nextPage;
+                }
+            }
+            if (doNavigation(fromPage, toPage, animation)) {
+                return publicObj;
+            } else {
+                return false;
+            }
+        }
+        function hashChangeHandler(e) {
+            if (location.hash === history[0].hash) {
+                return true;
+            } else if (location.hash === '') {
+                goBack();
+                return true;
+            } else {
+                if( (history[1] && location.hash === history[1].hash) ) {
+                    goBack();
+                    return true;
+                } else {
+                    // Lastly, just try going to the ID...
+                    goTo($(location.hash), jQTSettings.defaultAnimation);
+                }
+            }
+        }
+        function init(options) {
+            jQTSettings = $.extend({}, defaults, options);
+
+            // Preload images
+            if (jQTSettings.preloadImages) {
+                for (var i = jQTSettings.preloadImages.length - 1; i >= 0; i--) {
+                    (new Image()).src = jQTSettings.preloadImages[i];
+                }
+            }
+
+            // Set appropriate icon (retina display available in iOS 4.2 and later.)
+            var precomposed = (jQTSettings.addGlossToIcon) ? '' : '-precomposed';
+            if (jQTSettings.icon) {
+                hairExtensions += '<link rel="apple-touch-icon' + precomposed + '" href="' + jQTSettings.icon + '" />';
+            }
+            if (jQTSettings.icon4) {
+                hairExtensions += '<link rel="apple-touch-icon' + precomposed + '" sizes="114x114" href="' + jQTSettings.icon4 + '" />';
+            }
+            // Set startup screen
+            if (jQTSettings.startupScreen) {
+                hairExtensions += '<link rel="apple-touch-startup-image" href="' + jQTSettings.startupScreen + '" />';
+            }
+
+            // Set viewport
+            if (jQTSettings.fixedViewport) {
+                hairExtensions += '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>';
+            }
+
+            // Set full-screen
+            if (jQTSettings.fullScreen) {
+                hairExtensions += '<meta name="apple-mobile-web-app-capable" content="yes" />';
+                if (jQTSettings.statusBar) {
+                    hairExtensions += '<meta name="apple-mobile-web-app-status-bar-style" content="' + jQTSettings.statusBar + '" />';
+                }
+            }
+
+            // Attach hair extensions
+            if (hairExtensions) {
+                $head.prepend(hairExtensions);
+            }
+        }
+
+        function getAnimation(el) {
+            var animation;
+
+            for (var i=0, max=animations.length; i < max; i++) {
+                if (el.is(animations[i].selector)) {
+                    animation = animations[i];
+                    break;
+                }
+            }
+
+            if (!animation) {
+                animation = jQTSettings.defaultAnimation;
+            }
+            return animation;
+        }
+
+        function insertPages(nodes, animation) {
+
+            var targetPage = null;
+
+            // Call dom.createElement element directly instead of relying on $(nodes),
+            // to work around: https://github.com/madrobby/zepto/issues/312
+            var div = document.createElement('div');
+            div.innerHTML = nodes;
+
+            $(div).children().each(function(index, node) {
+                var $node = $(this);
+                if (!$node.attr('id')) {
+                    $node.attr('id', 'page-' + (++newPageCount));
+                }
+
+                // Remove any existing instance
+                $('#' + $node.attr('id')).remove();
+
+                $body.append($node);
+                $body.trigger('pageInserted', {page: $node});
+
+                if ($node.hasClass('current') || !targetPage) {
+                    targetPage = $node;
+                }
+            });
+            if (targetPage !== null) {
+                goTo(targetPage, animation);
+                return targetPage;
+            } else {
+                return false;
+            }
+        }
+
+        function orientationChangeHandler() {
+            $body.css('minHeight', 1000);
+            scrollTo(0,0);
+            var bodyHeight = window.innerHeight;
+            $body.css('minHeight', bodyHeight);
+
+            orientation = Math.abs(window.orientation) == 90 ? 'landscape' : 'portrait';
+            $body.removeClass('portrait landscape').addClass(orientation).trigger('turn', {orientation: orientation});
+        }
+        function setHash(hash) {
+            // Sanitize
+            location.hash = '#' + hash.replace(/^#/, '');
+        }
+        function showPageByHref(href, options) {
+
+            var defaults = {
+                data: null,
+                method: 'GET',
+                animation: null,
+                callback: null,
+                $referrer: null
+            };
+
+            var settings = $.extend({}, defaults, options);
+
+            if (href != '#') {
+                $.ajax({
+                    url: href,
+                    data: settings.data,
+                    type: settings.method,
+                    success: function (data) {
+                        var firstPage = insertPages(data, settings.animation);
+                        if (firstPage) {
+                            if (settings.method == 'GET' && jQTSettings.cacheGetRequests === true && settings.$referrer) {
+                                settings.$referrer.attr('href', '#' + firstPage.attr('id'));
+                            }
+                            if (settings.callback) {
+                                settings.callback(true);
+                            }
+                        }
+                    },
+                    error: function (data) {
+                        if (settings.$referrer) {
+                            settings.$referrer.unselect();
+                        }
+                        if (settings.callback) {
+                            settings.callback(false);
+                        }
+                    }
+                });
+            } else if (settings.$referrer) {
+                settings.$referrer.unselect();
+            }
+        }
+        function submitHandler(e, callback) {
+
+            $(':focus').trigger('blur');
+
+            e.preventDefault();
+
+            var $form = (typeof(e)==='string') ? $(e).eq(0) : (e.target ? $(e.target) : $(e));
+
+            if ($form.length && $form.is(jQTSettings.formSelector) && $form.attr('action')) {
+                showPageByHref($form.attr('action'), {
+                    data: $form.serialize(),
+                    method: $form.attr('method') || "POST",
+                    animation: getAnimation($form),
+                    callback: callback
+                });
+                return false;
+            }
+            return true;
+        }
+        function submitParentForm($el) {
+
+            var $form = $el.closest('form');
+            if ($form.length === 0) {
+            } else {
+                $form.trigger('submit');
+                return false;
+            }
+            return true;
+        }
+        function supportForTransform3d() {
+
+            var head, body, style, div, result;
+
+            head = document.getElementsByTagName('head')[0];
+            body = document.body;
+
+            style = document.createElement('style');
+            style.textContent = '@media (transform-3d),(-o-transform-3d),(-moz-transform-3d),(-webkit-transform-3d){#jqt-3dtest{height:3px}}';
+
+            div = document.createElement('div');
+            div.id = 'jqt-3dtest';
+
+            // Add to the page
+            head.appendChild(style);
+            body.appendChild(div);
+
+            // Check the result
+            result = div.offsetHeight === 3;
+
+            // Clean up
+            style.parentNode.removeChild(style);
+            div.parentNode.removeChild(div);
+
+            // Pass back result
+            return result;
+        }
+        function touchStartHandler(e){
+
+            var $el = $(e.target),
+                selectors = touchSelectors.join(', ');
+
+            // Find the nearest tappable ancestor
+            if (!$el.is(selectors)) {
+                $el = $el.closest(selectors);
+            }
+
+            // Make sure we have a tappable element
+            if ($el.length && $el.attr('href')) {
+                $el.addClass('active');
+            }
+
+            // Remove our active class if we move
+            $el.on($.support.touch ? 'touchmove' : 'mousemove', function(){
+                $el.removeClass('active');
+            });
+
+            $el.on('touchend', function(){
+                $el.unbind('touchmove mousemove');
+            });
+
+        }
+        function tapHandler(e){
+
+            // Grab the target element
+            var $el = $(e.target);
+
+            // Find the nearest tappable ancestor
+            if (!$el.is(touchSelectors.join(', '))) {
+                $el = $el.closest(touchSelectors.join(', '));
+            }
+
+            // Make sure we have a tappable element
+            if (!$el.length || !$el.attr('href')) {
+                return false;
+            }
+
+            // Init some vars
+            var target = $el.attr('target'),
+                hash = $el.prop('hash'),
+                href = $el.attr('href'),
+                animation = null;
+
+            if ($el.isExternalLink()) {
+                $el.unselect();
+                return true;
+
+            } else if ($el.is(jQTSettings.backSelector)) {
+                // User clicked or tapped a back button
+                goBack(hash);
+
+            } else if ($el.is(jQTSettings.submitSelector)) {
+                // User clicked or tapped a submit element
+                submitParentForm($el);
+
+            } else if (target === '_webapp') {
+                // User clicked or tapped an internal link, fullscreen mode
+                window.location = href;
+                return false;
+
+            } else if (href === '#') {
+                // Allow tap on item with no href
+                $el.unselect();
+                return true;
+            } else {
+                animation = getAnimation($el);
+
+                if (hash && hash !== '#') {
+                    // Internal href
+                    $el.addClass('active');
+                    goTo($(hash).data('referrer', $el), animation, $el.hasClass('reverse'));
+                    return false;
+                } else {
+                    // External href
+                    $el.addClass('loading active');
+                    showPageByHref($el.attr('href'), {
+                        animation: animation,
+                        callback: function() {
+                            $el.removeClass('loading');
+                            setTimeout($.fn.unselect, 250, $el);
+                        },
+                        $referrer: $el
+                    });
+                    return false;
+                }
+            }
+        }
+
+        // Get the party started
+        init(options);
+
+        // Document ready stuff
+        $(document).ready(function RUMBLE() {
+
+            // Store some properties in a support object
+            if (!$.support) $.support = {};
+            $.support.animationEvents = (typeof window.WebKitAnimationEvent != 'undefined');
+            $.support.touch = (typeof window.TouchEvent != 'undefined') && (window.navigator.userAgent.indexOf('Mobile') > -1) && jQTSettings.useFastTouch;
+            $.support.transform3d = supportForTransform3d();
+
+            $.support.ios5 = /OS (5(_\d+)*) like Mac OS X/i.test(window.navigator.userAgent);
+
+            if (!$.support.touch) {
+            }
+            if (!$.support.transform3d) {
+            }
+
+            // Define public jQuery functions
+            $.fn.isExternalLink = function() {
+                var $el = $(this);
+                return ($el.attr('target') == '_blank' || $el.attr('rel') == 'external' || $el.is('a[href^="http://maps.google.com"], a[href^="mailto:"], a[href^="tel:"], a[href^="javascript:"], a[href*="youtube.com/v"], a[href*="youtube.com/watch"]'));
+            };
+            $.fn.makeActive = function() {
+                return $(this).addClass('active');
+            };
+            $.fn.unselect = function(obj) {
+                if (obj) {
+                    obj.removeClass('active');
+                } else {
+                    $('.active').removeClass('active');
+                }
+            };
+
+            // Add extensions
+            for (var i=0, max=extensions.length; i < max; i++) {
+                var fn = extensions[i];
+                if ($.isFunction(fn)) {
+                    $.extend(publicObj, fn(publicObj));
+                }
+            }
+
+            // Add animations
+            for (var j=0, max_anims=defaults.animations.length; j < max_anims; j++) {
+                var animation = defaults.animations[j];
+                if(jQTSettings[animation.name + 'Selector'] !== undefined){
+                    animation.selector = jQTSettings[animation.name + 'Selector'];
+                }
+                addAnimation(animation);
+            }
+
+            // Create an array of stuff that needs touch event handling
+            touchSelectors.push(jQTSettings.touchSelector);
+            touchSelectors.push(jQTSettings.backSelector);
+            touchSelectors.push(jQTSettings.submitSelector);
+            $(touchSelectors.join(', ')).css('-webkit-touch-callout', 'none');
+
+            // Make sure we have a jqt element
+            $body = $('#jqt');
+            var anatomy_lessons = [];
+
+            if ($body.length === 0) {
+                $body = $(document.body).attr('id', 'jqt');
+            }
+
+            // Add some specific css if need be
+            if ($.support.transform3d) {
+                anatomy_lessons.push('supports3d');
+            }
+            if ($.support.ios5 && jQTSettings.useTouchScroll) {
+                anatomy_lessons.push('touchscroll');
+            }
+
+            if (jQTSettings.fullScreenClass && window.navigator.standalone === true) {
+                anatomy_lessons.push(jQTSettings.fullScreenClass, jQTSettings.statusBar);
+            }
+
+            // Bind events
+            
+            $body
+                .addClass(anatomy_lessons.join(' '))
+                .bind('click', clickHandler)
+                .bind('orientationchange', orientationChangeHandler)
+                .bind('submit', submitHandler)
+                .bind('tap', tapHandler)
+                .bind( $.support.touch ? 'touchstart' : 'mousedown', touchStartHandler)
+                .trigger('orientationchange');
+            
+            $(window).bind('hashchange', hashChangeHandler);
+
+            var startHash = location.hash;
+
+            // Determine what the initial view should be
+            if ($('#jqt > .current').length === 0) {
+                $currentPage = $('#jqt > *:first-child').addClass('current');
+            } else {
+                $currentPage = $('#jqt > .current');
+            }
+            
+            setHash($currentPage.attr('id'));
+            addPageToHistory($currentPage);
+
+            if ($(startHash).length === 1) {
+                goTo(startHash);
+            }
+        });
+
+        // Expose public methods and properties
+        publicObj = {
+            addAnimation: addAnimation,
+            animations: animations,
+            getOrientation: getOrientation,
+            goBack: goBack,
+            insertPages: insertPages,
+            goTo: goTo,
+            history: history,
+            settings: jQTSettings,
+            submitForm: submitHandler
+        };
+        return publicObj;
+    };
+    
+    jQTouchCore.prototype.extensions = [];
+
+    // If Zepto exists, jQTouch will use Zepto. Otherwise, a bridge should initialize
+    // jQTouch. See jqtouch-jquery.js.
+    if (!!window.Zepto) {
+        (function($) {
+            $.jQTouch = function(options) {
+                options.framework = $;
+                return jQTouchCore(options);
+            };
+
+            $.fn.prop = $.fn.attr;
+            
+            // Extensions directly manipulate the jQTouch object, before it's initialized.
+            $.jQTouch.addExtension = function(extension) {
+                jQTouchCore.prototype.extensions.push(extension);
+            };
+        })(Zepto);
+    }
+})(); // Double closure, ALL THE WAY ACROSS THE SKY
