@@ -14,11 +14,19 @@ class Common
         switch hash
             when 'takephoto' then stateTakePhoto()
             when 'pickexistingphoto' then statePickExistingPhoto()
+            when 'photoedit' then statePickExistingPhoto()
     
     stateTakePhoto = ->
+        getPhoto Camera.PictureSourceType.CAMERA
+    
+    statePickExistingPhoto = ->
+        getPhoto Camera.PictureSourceType.PHOTOLIBRARY
+    
+    getPhoto = (source) ->
         try
             navigator.camera.getPicture handleTakePhotoSuccess, handleTakePhotoFail, 
                 quality: 80,
+                sourceType: source,
                 destinationType: Camera.DestinationType.FILE_URI
             
         catch error
@@ -35,9 +43,6 @@ class Common
         #         
         #         jt.goBack '#start'
         jt.goTo '#photoedit', 'slide'
-    
-    statePickExistingPhoto = ->
-        
     
     if !!window.device
         document.addEventListener 'deviceready', ready, false
