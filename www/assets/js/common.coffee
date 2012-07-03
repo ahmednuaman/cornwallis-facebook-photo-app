@@ -1,7 +1,7 @@
 class Common
     image = 'assets/image/test.jpg'
     jt = new $.jQTouch
-        statusBar: 'black'
+        statusBar: 'black-translucent'
     
     ready = ->
         window.location.hash
