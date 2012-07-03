@@ -8,6 +8,10 @@
 		<link type="text/css" rel="stylesheet" href="assets/css/jqtouch.css" />
 		<style>
 		<!--
+			body
+			{
+				background: #000000;
+			}
 			#jqt > .middle
 			{
 				display: -webkit-box;
@@ -52,15 +56,15 @@
 			<div id="pickexistingphoto" class="loader middle">
 				<div></div>
 			</div>
-			<div id="photoedit">
+			<div id="editphoto">
 				<div class="toolbar">
 					<h1>Edit photo</h1>
 					<a class="button leftButton flip" href="#start">Cancel</a>
-					<a class="button" href="#photoconfirm">Confirm</a>
+					<a class="button" href="#confirmphoto">Confirm</a>
 				</div>
-				<canvas width="320" height="426" id="photoeditimage"></canvas>
+				<canvas width="320" height="480" id="editphotoimage"></canvas>
 			</div>
-			<div id="photoconfirm">
+			<div id="confirmphoto">
 				<div class="toolbar">
 					<h1>Confirm photo</h1>
 					<a class="back goback" href="#">Back</a>
@@ -70,6 +74,7 @@
 		</div>
 		<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 		<script src="assets/js/cordova.js"></script>
+		<script src="assets/js/easel.js"></script>
 		<script src="assets/js/jquery.js"></script>
 		<script src="assets/js/jqtouch.js"></script>
 		<script src="assets/js/jqtouch-jquery.js"></script>
