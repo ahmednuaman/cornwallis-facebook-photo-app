@@ -58,6 +58,11 @@ class Common
     stateEditPhoto = ->
         img = new Image()
         
+        stage.clear()
+        stage.update()
+        
+        text = { }
+        
         img.onload = ->
             bitmap = new Bitmap img
             
@@ -72,21 +77,12 @@ class Common
         
         img.src = image
         
-        $( '#editphoto' ).find( 'select' ).unbind( 'focus change' ).focus( (event) ->
-            $( this ).find( 'option:first' ).remove()
-            
-            $( this ).unbind( 'focus' )
-        ).change( -> 
-            addTextToPhoto $( this )
-        ).blur( ->
-            addTextToPhoto $( this )
-        ).each( -> 
-            $( this ).find( 'option.first' ).remove()
-            $( this ).prepend( '<option val="" class="first">' + $( this ).data( 'label' ) + '</option>' )
-            .val( $( this ).find( 'option:first' ) );
+        $( '#editphoto' ).find( 'select' ).unbind( 'change' ).change( addTextToPhoto ).each( ->
+            $( this ).val( $( this ).find( 'option:first' ) )
         )
     
-    addTextToPhoto = (element) ->
+    addTextToPhoto = (event) ->
+        element = $ this
         id = element.attr 'id'
         base = text[ id ]
         outline = text[ id + 'outline' ]
@@ -120,8 +116,6 @@ class Common
         text.toUpperCase().replace( /_/g, ' ' ).replace( /\|/g, "\n" )
     
     getPhoto = (source) ->
-        text = { }
-        
         try
             navigator.camera.getPicture handleTakePhotoSuccess, handleTakePhotoFail, 
                 quality: 80,
