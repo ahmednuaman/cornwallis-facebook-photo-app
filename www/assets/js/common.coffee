@@ -132,8 +132,8 @@ class Common
             handleTakePhotoFail error
         
     
-    handleTakePhotoSuccess = (imageURL) ->
-        image = imageURL
+    handleTakePhotoSuccess = (imageURI) ->
+        image = imageURI
         
         goto 'editphoto'
     
