@@ -118,9 +118,12 @@ class Common
     getPhoto = (source) ->
         try
             navigator.camera.getPicture handleTakePhotoSuccess, handleTakePhotoFail, 
-                quality: 80,
+                allowEdit: true,
+                quality: 50,
                 sourceType: source,
-                destinationType: Camera.DestinationType.FILE_URI
+                destinationType: Camera.DestinationType.FILE_URI,
+                targetWidth: canvas.width,
+                targetHeight: canvas.height
             
         catch error
             handleTakePhotoFail error
