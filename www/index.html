@@ -5,7 +5,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-		<link type="text/css" rel="stylesheet" href="assets/css/jqtouch.css" />
+		<link type="text/css" rel="stylesheet" href="assets/css/jquery.mobile-1.1.0.min.css" />
+		<link type="text/css" rel="stylesheet" href="assets/css/jquery.mobile.structure-1.1.0.min.css" />
+		<link type="text/css" rel="stylesheet" href="assets/css/jquery.mobile.theme-1.1.0.min.css" />
 		<style>
 		<!--
 			body
@@ -45,23 +47,25 @@
 		<title></title>
 	</head>
 	<body>
-		<div id="jqt" class="touchscroll">
-			<div id="start" class="middle current">
+		<div id="start" class="middle current" data-role="page">
+			<div data-role="content">
 				<a class="whiteButton" href="#takephoto">Take a photo</a>
 				<a class="whiteButton" href="#pickexistingphoto">Use existing one</a>
 			</div>
-			<div id="takephoto" class="loader middle">
-				<div></div>
+		</div>
+		<div id="takephoto" class="loader middle" data-role="page">
+			<div data-role="content"></div>
+		</div>
+		<div id="pickexistingphoto" class="loader middle" data-role="page">
+			<div data-role="content"></div>
+		</div>
+		<div id="editphoto" data-role="page">
+			<div class="toolbar" data-role="header">
+				<h1>Edit photo</h1>
+				<a class="button leftButton flip" href="#start">Cancel</a>
+				<a class="button" href="#confirmphoto">Confirm</a>
 			</div>
-			<div id="pickexistingphoto" class="loader middle">
-				<div></div>
-			</div>
-			<div id="editphoto">
-				<div class="toolbar">
-					<h1>Edit photo</h1>
-					<a class="button leftButton flip" href="#start">Cancel</a>
-					<a class="button" href="#confirmphoto">Confirm</a>
-				</div>
+			<div data-role="content">
 				<form>
 					<ul class="rounded">
 						<li class="arrow">
@@ -86,12 +90,14 @@
 					</ul>
 				</form>
 			</div>
-			<div id="confirmphoto">
-				<div class="toolbar">
-					<h1>Confirm photo</h1>
-					<a class="back goback" href="#">Back</a>
-					<a class="button slideup" href="#start">Restart</a>
-				</div>
+		</div>
+		<div id="confirmphoto" data-role="page">
+			<div class="toolbar" data-role="header">
+				<h1>Confirm photo</h1>
+				<a class="back goback" href="#">Back</a>
+				<a class="button slideup" href="#start">Restart</a>
+			</div>
+			<div data-role="content">
 				<img id="confirmphotoimage" width="320" height="480" />
 				<br />
 				<a class="whiteButton" href="">Share on Facebook</a>
@@ -100,11 +106,10 @@
 			</div>
 		</div>
 		<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
-		<script src="assets/js/cordova.js"></script>
+		<script src="cordova.js"></script>
 		<script src="assets/js/easel.js"></script>
 		<script src="assets/js/jquery.js"></script>
-		<script src="assets/js/jqtouch.js"></script>
-		<script src="assets/js/jqtouch-jquery.js"></script>
+		<script src="assets/js/jquery.mobile-1.1.0.min.js"></script>
 		<script src="assets/js/common.js"></script>
 	</body>
 </html>

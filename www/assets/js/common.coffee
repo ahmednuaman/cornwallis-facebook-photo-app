@@ -4,8 +4,6 @@ class Common
     canvas = null
     image = 'assets/image/test.jpg'
     imageX = 0
-    jt = new $.jQTouch
-        statusBar: 'black-translucent'
     stage = null
     text = { }
     textColour = '#ffffff'
