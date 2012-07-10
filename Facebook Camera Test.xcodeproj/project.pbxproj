@@ -37,7 +37,6 @@
 		E25B294F1591CC0300295A91 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E25B294E1591CC0300295A91 /* AppDelegate.m */; };
 		E25B29521591CC0300295A91 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E25B29511591CC0300295A91 /* MainViewController.m */; };
 		E25B29541591CC0300295A91 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E25B29531591CC0300295A91 /* MainViewController.xib */; };
-		E25B29821591D80400295A91 /* www in Resources */ = {isa = PBXBuildFile; fileRef = E25B29811591D80400295A91 /* www */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,7 +77,6 @@
 		E25B29531591CC0300295A91 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainViewController.xib; path = Classes/MainViewController.xib; sourceTree = "<group>"; };
 		E25B29561591CC0300295A91 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; name = README; path = Plugins/README; sourceTree = "<group>"; };
 		E25B29571591CC0300295A91 /* verify.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = verify.sh; sourceTree = "<group>"; };
-		E25B29811591D80400295A91 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,10 +111,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E20C966D15AC3B2900D0C1E1 /* www */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = www;
+			path = "Facebook Camera Test/www";
+			sourceTree = "<group>";
+		};
 		E25B28F41591CC0200295A91 = {
 			isa = PBXGroup;
 			children = (
-				E25B29811591D80400295A91 /* www */,
+				E20C966D15AC3B2900D0C1E1 /* www */,
 				E25B29201591CC0200295A91 /* Facebook Camera Test */,
 				E25B29051591CC0200295A91 /* Frameworks */,
 				E25B29031591CC0200295A91 /* Products */,
@@ -330,7 +336,6 @@
 				E25B29491591CC0300295A91 /* Capture.bundle in Resources */,
 				E25B294B1591CC0300295A91 /* Cordova.plist in Resources */,
 				E25B29541591CC0300295A91 /* MainViewController.xib in Resources */,
-				E25B29821591D80400295A91 /* www in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
